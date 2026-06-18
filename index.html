@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Калькулятор вартості сайту</title>
+  <title>Портфоліо веб-розробника</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,13 +13,35 @@
             sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
           },
           boxShadow: {
-            glow: '0 0 50px rgba(16, 185, 129, 0.16)',
+            glow: '0 0 70px rgba(16, 185, 129, 0.18)',
+            indigo: '0 24px 90px rgba(99, 102, 241, 0.22)',
           },
         },
       },
     };
   </script>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 15% 5%, rgba(16, 185, 129, 0.13), transparent 34rem),
+        radial-gradient(circle at 85% 12%, rgba(99, 102, 241, 0.15), transparent 36rem),
+        #020617;
+    }
+
+    .hero-canvas {
+      filter: saturate(1.15);
+    }
+
+    .glass {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(18px);
+    }
+
     .range-control {
       height: 1rem;
       background: linear-gradient(to right, #10b981 0%, #10b981 var(--range-progress), #334155 var(--range-progress), #334155 100%);
@@ -43,23 +65,264 @@
       background: #10b981;
       box-shadow: 0 10px 24px rgba(16, 185, 129, 0.35);
     }
+
+    .project-card {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+        radial-gradient(circle at top right, rgba(16, 185, 129, 0.18), transparent 16rem);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
-  <main class="min-h-screen overflow-hidden px-4 py-8 sm:px-6 lg:px-8">
-    <section class="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl items-center">
-      <div class="grid w-full gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
+<body class="min-h-screen text-slate-100 antialiased">
+  <header class="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <a href="#home" class="text-lg font-black tracking-tight text-white">Nazar.dev</a>
+      <div class="hidden items-center gap-7 text-sm font-medium text-slate-300 md:flex">
+        <a class="transition hover:text-emerald-300" href="#services">Послуги</a>
+        <a class="transition hover:text-emerald-300" href="#work">Роботи</a>
+        <a class="transition hover:text-emerald-300" href="#process">Процес</a>
+        <a class="transition hover:text-emerald-300" href="#calculator">Калькулятор</a>
+        <a class="transition hover:text-emerald-300" href="#contact">Контакти</a>
+      </div>
+      <a href="#contact" class="hidden rounded-2xl bg-emerald-400 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-emerald-300 sm:inline-flex">
+        Обговорити проєкт
+      </a>
+      <button id="menuButton" type="button" class="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-bold text-white md:hidden">
+        Меню
+      </button>
+    </nav>
+    <div id="mobileMenu" class="hidden border-t border-white/10 bg-slate-950/95 px-4 py-4 md:hidden">
+      <div class="mx-auto grid max-w-7xl gap-3 text-sm font-semibold text-slate-300">
+        <a class="rounded-2xl px-4 py-3 transition hover:bg-white/[0.05] hover:text-emerald-300" href="#services">Послуги</a>
+        <a class="rounded-2xl px-4 py-3 transition hover:bg-white/[0.05] hover:text-emerald-300" href="#work">Роботи</a>
+        <a class="rounded-2xl px-4 py-3 transition hover:bg-white/[0.05] hover:text-emerald-300" href="#process">Процес</a>
+        <a class="rounded-2xl px-4 py-3 transition hover:bg-white/[0.05] hover:text-emerald-300" href="#calculator">Калькулятор</a>
+        <a class="rounded-2xl bg-emerald-400 px-4 py-3 text-slate-950" href="#contact">Обговорити проєкт</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="relative isolate overflow-hidden px-4 pb-16 pt-28 sm:px-6 lg:px-8">
+      <canvas id="heroCanvas" class="hero-canvas absolute inset-0 -z-10 h-full w-full opacity-80"></canvas>
+      <div class="mx-auto grid min-h-[calc(100vh-7rem)] max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <div class="max-w-3xl">
+          <p class="mb-5 w-fit rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-300">
+            Вебсайти, що продають і виглядають дорого
+          </p>
+          <h1 class="text-4xl font-black leading-tight tracking-tight text-white sm:text-6xl lg:text-7xl">
+            Створюю сучасні сайти для бізнесу, брендів і експертів
+          </h1>
+          <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+            Проєктую структуру, пишу чистий код, налаштовую інтеграції та доводжу інтерфейс до відчуття готового продукту.
+          </p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="#calculator" class="rounded-2xl bg-emerald-400 px-6 py-4 text-center font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-emerald-300 hover:shadow-xl hover:shadow-emerald-400/20">
+              Розрахувати вартість
+            </a>
+            <a href="#work" class="rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-4 text-center font-bold text-white transition hover:border-indigo-400/60 hover:bg-indigo-500/15">
+              Подивитися роботи
+            </a>
+          </div>
+          <div class="mt-10 grid max-w-2xl grid-cols-3 gap-3">
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <p class="text-2xl font-black text-white">24+</p>
+              <p class="mt-1 text-xs text-slate-400 sm:text-sm">запуски</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <p class="text-2xl font-black text-white">7 днів</p>
+              <p class="mt-1 text-xs text-slate-400 sm:text-sm">MVP-сайт</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <p class="text-2xl font-black text-white">100%</p>
+              <p class="mt-1 text-xs text-slate-400 sm:text-sm">адаптивно</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass shadow-indigo rounded-[2rem] p-5 sm:p-6">
+          <div class="rounded-[1.5rem] border border-white/10 bg-slate-950/80 p-4">
+            <div class="mb-4 flex items-center justify-between">
+              <div class="flex gap-2">
+                <span class="h-3 w-3 rounded-full bg-rose-400"></span>
+                <span class="h-3 w-3 rounded-full bg-amber-300"></span>
+                <span class="h-3 w-3 rounded-full bg-emerald-400"></span>
+              </div>
+              <span class="text-xs font-semibold text-slate-500">portfolio-preview</span>
+            </div>
+            <div class="grid gap-3">
+              <div class="h-28 rounded-2xl bg-gradient-to-br from-emerald-400 via-cyan-300 to-indigo-500 p-4">
+                <div class="h-3 w-28 rounded-full bg-slate-950/35"></div>
+                <div class="mt-10 h-4 w-44 rounded-full bg-white/70"></div>
+                <div class="mt-3 h-3 w-32 rounded-full bg-white/45"></div>
+              </div>
+              <div class="grid grid-cols-3 gap-3">
+                <div class="h-24 rounded-2xl border border-white/10 bg-white/[0.05] p-3">
+                  <div class="h-8 w-8 rounded-xl bg-emerald-400/25"></div>
+                  <div class="mt-5 h-2 rounded-full bg-slate-600"></div>
+                </div>
+                <div class="h-24 rounded-2xl border border-white/10 bg-white/[0.05] p-3">
+                  <div class="h-8 w-8 rounded-xl bg-indigo-400/25"></div>
+                  <div class="mt-5 h-2 rounded-full bg-slate-600"></div>
+                </div>
+                <div class="h-24 rounded-2xl border border-white/10 bg-white/[0.05] p-3">
+                  <div class="h-8 w-8 rounded-xl bg-cyan-300/25"></div>
+                  <div class="mt-5 h-2 rounded-full bg-slate-600"></div>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-emerald-400/25 bg-emerald-400/10 p-4">
+                <div class="flex items-end justify-between">
+                  <span class="text-sm text-emerald-200">Конверсія</span>
+                  <span class="text-3xl font-black text-white">+38%</span>
+                </div>
+                <div class="mt-4 h-2 overflow-hidden rounded-full bg-slate-800">
+                  <div class="h-full w-3/4 rounded-full bg-emerald-400"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="reveal px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="max-w-2xl">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">Послуги</p>
+          <h2 class="mt-3 text-3xl font-black text-white sm:text-5xl">Все, що потрібно для запуску сайту</h2>
+        </div>
+        <div class="mt-10 grid gap-4 md:grid-cols-3">
+          <article class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 transition hover:-translate-y-1 hover:border-emerald-400/40">
+            <div class="mb-6 h-12 w-12 rounded-2xl bg-emerald-400/15"></div>
+            <h3 class="text-xl font-bold text-white">Лендінги</h3>
+            <p class="mt-3 leading-7 text-slate-300">Чітка структура, сильні блоки довіри, адаптивність і швидкий запуск реклами.</p>
+          </article>
+          <article class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 transition hover:-translate-y-1 hover:border-indigo-400/40">
+            <div class="mb-6 h-12 w-12 rounded-2xl bg-indigo-400/15"></div>
+            <h3 class="text-xl font-bold text-white">Сайти-портфоліо</h3>
+            <p class="mt-3 leading-7 text-slate-300">Візуальна подача експерта, кейси, форма заявки та зрозумілий шлях до контакту.</p>
+          </article>
+          <article class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 transition hover:-translate-y-1 hover:border-cyan-300/40">
+            <div class="mb-6 h-12 w-12 rounded-2xl bg-cyan-300/15"></div>
+            <h3 class="text-xl font-bold text-white">Інтеграції</h3>
+            <p class="mt-3 leading-7 text-slate-300">Telegram, CRM, аналітика, форми, події та автоматизації для обробки лідів.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="reveal px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+          <div class="max-w-2xl">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-indigo-300">Кейси</p>
+            <h2 class="mt-3 text-3xl font-black text-white sm:text-5xl">Вигадані приклади для презентації стилю</h2>
+          </div>
+          <p class="max-w-md leading-7 text-slate-300">Картки можна швидко замінити на реальні проєкти, додати посилання, скріншоти й цифри результатів.</p>
+        </div>
+
+        <div class="mt-10 grid gap-5 lg:grid-cols-3">
+          <article class="project-card rounded-3xl border border-white/10 p-5">
+            <div class="aspect-[4/3] rounded-2xl border border-white/10 bg-slate-950/70 p-4">
+              <div class="h-6 w-28 rounded-full bg-emerald-400/35"></div>
+              <div class="mt-8 h-20 rounded-2xl bg-white/10"></div>
+              <div class="mt-4 grid grid-cols-2 gap-3">
+                <div class="h-16 rounded-2xl bg-white/10"></div>
+                <div class="h-16 rounded-2xl bg-white/10"></div>
+              </div>
+            </div>
+            <h3 class="mt-5 text-xl font-bold text-white">Aurora Studio</h3>
+            <p class="mt-2 text-slate-300">Портфоліо для креативної студії з акцентом на кейси та швидку заявку.</p>
+          </article>
+
+          <article class="project-card rounded-3xl border border-white/10 p-5">
+            <div class="aspect-[4/3] rounded-2xl border border-white/10 bg-slate-950/70 p-4">
+              <div class="grid grid-cols-3 gap-3">
+                <div class="h-28 rounded-2xl bg-indigo-400/20"></div>
+                <div class="h-28 rounded-2xl bg-emerald-400/20"></div>
+                <div class="h-28 rounded-2xl bg-cyan-300/20"></div>
+              </div>
+              <div class="mt-5 h-4 w-3/4 rounded-full bg-white/20"></div>
+              <div class="mt-3 h-4 w-1/2 rounded-full bg-white/10"></div>
+            </div>
+            <h3 class="mt-5 text-xl font-bold text-white">Nova Launch</h3>
+            <p class="mt-2 text-slate-300">Лендінг для запуску продукту з тарифами, аналітикою та Telegram-лідами.</p>
+          </article>
+
+          <article class="project-card rounded-3xl border border-white/10 p-5">
+            <div class="aspect-[4/3] rounded-2xl border border-white/10 bg-slate-950/70 p-4">
+              <div class="h-32 rounded-2xl bg-gradient-to-br from-cyan-300/35 to-indigo-500/30"></div>
+              <div class="mt-4 flex gap-3">
+                <div class="h-14 flex-1 rounded-2xl bg-white/10"></div>
+                <div class="h-14 flex-1 rounded-2xl bg-white/10"></div>
+              </div>
+            </div>
+            <h3 class="mt-5 text-xl font-bold text-white">Metric CRM</h3>
+            <p class="mt-2 text-slate-300">Корпоративна сторінка для сервісу з фокусом на довіру, демо та інтеграції.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process" class="reveal px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">Процес</p>
+            <h2 class="mt-3 text-3xl font-black text-white sm:text-5xl">Від ідеї до запуску без хаосу</h2>
+            <p class="mt-5 leading-7 text-slate-300">
+              Кожен етап має зрозумілий результат: структура, дизайн, розробка, інтеграції та фінальна перевірка.
+            </p>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <article class="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+              <span class="text-sm font-black text-emerald-300">01</span>
+              <h3 class="mt-4 text-xl font-bold text-white">Бриф і структура</h3>
+              <p class="mt-3 leading-7 text-slate-300">Формуємо цілі сайту, блоки, офер, шлях користувача та потрібні інтеграції.</p>
+            </article>
+            <article class="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+              <span class="text-sm font-black text-indigo-300">02</span>
+              <h3 class="mt-4 text-xl font-bold text-white">Дизайн-концепт</h3>
+              <p class="mt-3 leading-7 text-slate-300">Збираю візуальний напрям, адаптивні стани та акценти під вашу аудиторію.</p>
+            </article>
+            <article class="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+              <span class="text-sm font-black text-cyan-300">03</span>
+              <h3 class="mt-4 text-xl font-bold text-white">Розробка</h3>
+              <p class="mt-3 leading-7 text-slate-300">Верстаю швидку сторінку, підключаю форми, анімації, аналітику та CRM.</p>
+            </article>
+            <article class="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+              <span class="text-sm font-black text-emerald-300">04</span>
+              <h3 class="mt-4 text-xl font-bold text-white">Запуск</h3>
+              <p class="mt-3 leading-7 text-slate-300">Перевіряю мобільну версію, швидкість, форми, події та передаю готовий сайт.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculator" class="reveal px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
         <div class="flex flex-col justify-center rounded-3xl border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-slate-950/60 backdrop-blur sm:p-8 lg:p-10">
           <p class="mb-4 w-fit rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-300">
             Онлайн-калькулятор
           </p>
-          <h1 class="max-w-3xl text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 class="max-w-3xl text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">
             Розрахуйте вартість вашого майбутнього сайту
-          </h1>
+          </h2>
           <p class="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-            Оберіть кількість сторінок, додаткові опції та бажаний темп запуску. Підсумкова ціна оновлюється миттєво.
+            Оберіть кількість сторінок, додаткові опції та бажаний темп запуску. Підсумкова ціна оновлюється плавно й миттєво.
           </p>
-
           <div class="mt-8 grid gap-4 sm:grid-cols-3">
             <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
               <p class="text-sm text-slate-400">Сторінка</p>
@@ -70,7 +333,7 @@
               <p class="mt-1 text-2xl font-semibold text-white">1-20</p>
             </div>
             <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <p class="text-sm text-slate-400">Оновлення</p>
+              <p class="text-sm text-slate-400">Формат</p>
               <p class="mt-1 text-2xl font-semibold text-white">Live</p>
             </div>
           </div>
@@ -80,26 +343,15 @@
           <form id="calculatorForm" class="space-y-7">
             <div>
               <div class="mb-4 flex items-end justify-between gap-4">
-                <label for="pagesRange" class="text-base font-semibold text-white">
-                  Кількість сторінок
-                </label>
-                <span class="rounded-2xl bg-indigo-500 px-4 py-2 text-xl font-bold text-white" id="pagesCount">
-                  5
-                </span>
+                <label for="pagesRange" class="text-base font-semibold text-white">Кількість сторінок</label>
+                <span class="rounded-2xl bg-indigo-500 px-4 py-2 text-xl font-bold text-white" id="pagesCount">5</span>
               </div>
               <div class="mb-5 text-center">
                 <span id="pagesSelectedText" class="inline-flex items-center rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-5 py-3 text-2xl font-black text-emerald-200 shadow-lg shadow-emerald-400/10 sm:text-3xl">
                   5 сторінок
                 </span>
               </div>
-              <input
-                id="pagesRange"
-                type="range"
-                min="1"
-                max="20"
-                value="5"
-                class="range-control w-full cursor-pointer appearance-none rounded-full accent-emerald-500 transition"
-              />
+              <input id="pagesRange" type="range" min="1" max="20" value="5" class="range-control w-full cursor-pointer appearance-none rounded-full accent-emerald-500 transition" />
               <div class="mt-3 flex justify-between text-sm text-slate-400">
                 <span>1 сторінка</span>
                 <span>20 сторінок</span>
@@ -136,13 +388,8 @@
             </fieldset>
 
             <div>
-              <label for="urgencySelect" class="mb-3 block text-base font-semibold text-white">
-                Терміновість
-              </label>
-              <select
-                id="urgencySelect"
-                class="w-full cursor-pointer rounded-2xl border border-white/10 bg-slate-950 px-4 py-4 text-slate-100 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20"
-              >
+              <label for="urgencySelect" class="mb-3 block text-base font-semibold text-white">Терміновість</label>
+              <select id="urgencySelect" class="w-full cursor-pointer rounded-2xl border border-white/10 bg-slate-950 px-4 py-4 text-slate-100 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20">
                 <option value="1">Звичайний термін</option>
                 <option value="1.5">Терміново за 3 дні</option>
               </select>
@@ -152,70 +399,74 @@
               <p class="text-sm font-medium uppercase tracking-[0.18em] text-emerald-200">Фінальна вартість</p>
               <p id="totalPrice" class="mt-3 text-5xl font-black tracking-tight text-white sm:text-6xl">$250</p>
             </div>
-
-            <fieldset class="rounded-3xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
-              <legend class="px-2 text-base font-semibold text-white">Форма для зв'язку</legend>
-              <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label for="clientName" class="mb-2 block text-sm font-medium text-slate-300">Ваше ім'я</label>
-                  <input
-                    id="clientName"
-                    type="text"
-                    autocomplete="name"
-                    placeholder="Олександр"
-                    class="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/20"
-                  />
-                </div>
-                <div>
-                  <label for="clientContact" class="mb-2 block text-sm font-medium text-slate-300">Телефон або email</label>
-                  <input
-                    id="clientContact"
-                    type="text"
-                    autocomplete="email"
-                    placeholder="+380 або email"
-                    class="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/20"
-                  />
-                </div>
-              </div>
-              <div class="mt-4">
-                <label for="clientMessage" class="mb-2 block text-sm font-medium text-slate-300">Коротко про проєкт</label>
-                <textarea
-                  id="clientMessage"
-                  rows="3"
-                  placeholder="Наприклад: сайт-портфоліо, лендінг або корпоративний сайт"
-                  class="w-full resize-none rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/20"
-                ></textarea>
-              </div>
-            </fieldset>
-
-            <button
-              type="button"
-              id="orderButton"
-              class="w-full rounded-2xl bg-emerald-400 px-6 py-4 text-base font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-emerald-300 hover:shadow-xl hover:shadow-emerald-400/20 focus:outline-none focus:ring-4 focus:ring-emerald-400/30"
-            >
-              Оформити заявку
-            </button>
           </form>
         </div>
       </div>
     </section>
+
+    <section class="reveal px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl rounded-[2rem] border border-emerald-400/25 bg-gradient-to-br from-emerald-400/15 via-slate-900 to-indigo-500/15 p-6 shadow-glow sm:p-10">
+        <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-emerald-200">Готові стартувати?</p>
+            <h2 class="mt-3 text-3xl font-black text-white sm:text-5xl">Зробимо сайт, який не соромно показувати клієнтам</h2>
+          </div>
+          <a href="#contact" class="rounded-2xl bg-emerald-400 px-6 py-4 text-center font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-emerald-300">
+            Написати зараз
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 sm:p-8">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">Контакти</p>
+          <h2 class="mt-3 text-3xl font-black text-white sm:text-5xl">Розкажіть про ідею, а я запропоную рішення</h2>
+          <p class="mt-5 leading-7 text-slate-300">Заповніть форму, і я підготую коротку відповідь щодо формату, бюджету та наступних кроків.</p>
+          <div class="mt-8 space-y-4 text-slate-300">
+            <p><span class="font-bold text-white">Email:</span> hello@nazar.dev</p>
+            <p><span class="font-bold text-white">Telegram:</span> @nazar_dev</p>
+            <p><span class="font-bold text-white">Фокус:</span> лендінги, портфоліо, інтеграції, UI</p>
+          </div>
+        </div>
+
+        <form id="contactForm" class="rounded-3xl border border-white/10 bg-slate-900 p-5 shadow-glow sm:p-6 lg:p-8">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="clientName" class="mb-2 block text-sm font-medium text-slate-300">Ваше ім'я</label>
+              <input id="clientName" type="text" autocomplete="name" placeholder="Олександр" class="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/20" />
+            </div>
+            <div>
+              <label for="clientContact" class="mb-2 block text-sm font-medium text-slate-300">Телефон або email</label>
+              <input id="clientContact" type="text" autocomplete="email" placeholder="+380 або email" class="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/20" />
+            </div>
+          </div>
+          <div class="mt-4">
+            <label for="clientMessage" class="mb-2 block text-sm font-medium text-slate-300">Коротко про проєкт</label>
+            <textarea id="clientMessage" rows="5" placeholder="Наприклад: потрібен сайт-портфоліо з формою заявки та Telegram-інтеграцією" class="w-full resize-none rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/20"></textarea>
+          </div>
+          <button type="button" id="orderButton" class="mt-5 w-full rounded-2xl bg-emerald-400 px-6 py-4 text-base font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-emerald-300 hover:shadow-xl hover:shadow-emerald-400/20 focus:outline-none focus:ring-4 focus:ring-emerald-400/30">
+            Оформити заявку
+          </button>
+        </form>
+      </div>
+    </section>
   </main>
+
+  <footer class="border-t border-white/10 px-4 py-8 text-center text-sm text-slate-500 sm:px-6 lg:px-8">
+    <p>© 2026 Nazar.dev. Сайти, інтерфейси та інтеграції.</p>
+  </footer>
 
   <div id="successModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 px-4 backdrop-blur-sm">
     <div class="w-full max-w-md scale-95 rounded-3xl border border-white/10 bg-slate-900 p-6 text-center opacity-0 shadow-2xl shadow-slate-950/70 transition duration-200 sm:p-8" id="modalPanel">
-      <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400/15 text-3xl text-emerald-300">
-        ✓
-      </div>
+      <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400/15 text-3xl font-black text-emerald-300">✓</div>
       <h2 class="mt-5 text-2xl font-bold text-white">Заявку успішно створено</h2>
       <p class="mt-3 text-slate-300">
         Дякуємо! Ми отримали ваші контакти. Орієнтовна вартість проєкту:
         <span id="modalPrice" class="font-bold text-emerald-300">$250</span>.
       </p>
-      <button
-        type="button"
-        id="closeModal"
-        class="mt-6 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 font-semibold text-white transition hover:border-indigo-400/60 hover:bg-indigo-500/20 focus:outline-none focus:ring-4 focus:ring-indigo-500/20"
-      >
+      <button type="button" id="closeModal" class="mt-6 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 font-semibold text-white transition hover:border-indigo-400/60 hover:bg-indigo-500/20 focus:outline-none focus:ring-4 focus:ring-indigo-500/20">
         Закрити
       </button>
     </div>
@@ -224,6 +475,12 @@
   <script>
     const BASE_PAGE_PRICE = 50;
 
+    const menuButton = document.getElementById('menuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const contactForm = document.getElementById('contactForm');
+    const clientName = document.getElementById('clientName');
+    const clientContact = document.getElementById('clientContact');
+    const clientMessage = document.getElementById('clientMessage');
     const pagesRange = document.getElementById('pagesRange');
     const pagesCount = document.getElementById('pagesCount');
     const pagesSelectedText = document.getElementById('pagesSelectedText');
@@ -281,6 +538,12 @@
       priceAnimationId = requestAnimationFrame(tick);
     }
 
+    function getPagesWord(count) {
+      if (count === 1) return 'сторінка';
+      if (count >= 2 && count <= 4) return 'сторінки';
+      return 'сторінок';
+    }
+
     function updateCalculator() {
       const currentTotal = calculateTotal();
       const progress = ((Number(pagesRange.value) - Number(pagesRange.min)) / (Number(pagesRange.max) - Number(pagesRange.min))) * 100;
@@ -292,14 +555,15 @@
       pagesRange.style.setProperty('--range-progress', `${progress}%`);
     }
 
-    function getPagesWord(count) {
-      if (count === 1) return 'сторінка';
-      if (count >= 2 && count <= 4) return 'сторінки';
-      return 'сторінок';
-    }
-
     function openModal() {
       updateCalculator();
+      if (!clientName.value.trim() || !clientContact.value.trim()) {
+        contactForm.classList.add('ring-4', 'ring-rose-400/25');
+        setTimeout(() => contactForm.classList.remove('ring-4', 'ring-rose-400/25'), 1200);
+        clientName.value.trim() ? clientContact.focus() : clientName.focus();
+        return;
+      }
+
       successModal.classList.remove('hidden');
       successModal.classList.add('flex');
 
@@ -319,6 +583,97 @@
       }, 180);
     }
 
+    function drawHeroCanvas() {
+      const canvas = document.getElementById('heroCanvas');
+      const context = canvas.getContext('2d');
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      let width;
+      let height;
+      let points = [];
+
+      function resize() {
+        width = canvas.offsetWidth;
+        height = canvas.offsetHeight;
+        canvas.width = width * pixelRatio;
+        canvas.height = height * pixelRatio;
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        points = Array.from({ length: Math.round(width / 18) }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          size: Math.random() * 2 + 1,
+        }));
+      }
+
+      function render() {
+        context.clearRect(0, 0, width, height);
+        context.fillStyle = 'rgba(2, 6, 23, 0.14)';
+        context.fillRect(0, 0, width, height);
+
+        points.forEach((point, index) => {
+          point.x += point.vx;
+          point.y += point.vy;
+
+          if (point.x < 0 || point.x > width) point.vx *= -1;
+          if (point.y < 0 || point.y > height) point.vy *= -1;
+
+          context.beginPath();
+          context.arc(point.x, point.y, point.size, 0, Math.PI * 2);
+          context.fillStyle = 'rgba(16, 185, 129, 0.55)';
+          context.fill();
+
+          for (let nextIndex = index + 1; nextIndex < points.length; nextIndex += 1) {
+            const nextPoint = points[nextIndex];
+            const distance = Math.hypot(point.x - nextPoint.x, point.y - nextPoint.y);
+
+            if (distance < 120) {
+              context.beginPath();
+              context.moveTo(point.x, point.y);
+              context.lineTo(nextPoint.x, nextPoint.y);
+              context.strokeStyle = `rgba(99, 102, 241, ${0.16 * (1 - distance / 120)})`;
+              context.lineWidth = 1;
+              context.stroke();
+            }
+          }
+        });
+
+        requestAnimationFrame(render);
+      }
+
+      resize();
+      render();
+      window.addEventListener('resize', resize);
+    }
+
+    function initRevealAnimations() {
+      const revealElements = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealElements.forEach((element) => observer.observe(element));
+    }
+
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    [clientName, clientContact, clientMessage].forEach((field) => {
+      field.addEventListener('input', () => {
+        contactForm.classList.remove('ring-4', 'ring-rose-400/25');
+      });
+    });
+
     pagesRange.addEventListener('input', updateCalculator);
     urgencySelect.addEventListener('change', updateCalculator);
     serviceCheckboxes.forEach((checkbox) => checkbox.addEventListener('change', updateCalculator));
@@ -334,6 +689,8 @@
     });
 
     updateCalculator();
+    drawHeroCanvas();
+    initRevealAnimations();
   </script>
 </body>
 </html>
